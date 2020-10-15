@@ -1,0 +1,48 @@
+.table{
+	width: 900px;
+	display: grid;
+	grid-template-rows: auto;
+	grid-template-columns: calc(20% + 1px) calc(80% + 1px);
+	border: 1px solid black;
+	max-height: 500px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.section{
+	border: 1px solid black;
+	height: 1.8em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+.btn__wrapper{
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+.section:nth-child(1){
+	background-color: #69c
+}
+.section:nth-child(2){
+	background-color: #69c
+}
+.section:nth-child(3){
+	background-color: #abb88e
+}
+.section:nth-child(4){
+	background-color: #abb88e
+}
+.btn{
+	background-color: #d5cfb7;
+}
+.btn:active{
+	border-style: solid
+}
+.active{
+	background: #606060;
+}
+.btn:focus{
+	outline:none;
+}
+
