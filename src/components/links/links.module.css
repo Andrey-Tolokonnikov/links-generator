@@ -12,9 +12,16 @@
 	border: 1px solid black;
 	height: 1.8em;
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	text-align: center;
+}
+.section a{
+	display: inline-block;
+	padding: 5px;
+}
+.control{
+	padding: 10px;
 }
 .btn__wrapper{
 	display: flex;
@@ -44,5 +51,8 @@
 }
 .btn:focus{
 	outline:none;
+}
+input:focus{
+	outline: none;
 }
 

@@ -4,7 +4,8 @@ import {connect} from 'react-redux'
 import {addLink, changeText, changeProtocol, changePort, changeTextPort, changeEndText, changeCurrentEnd} from './../../redux/linksReducer'
 class linksContainer extends React.Component{
 	componentDidMount(){
-		//here should be AJAX request or other actions
+		const oldLinks=localStorage.links??"[]"
+		JSON.parse(oldLinks).forEach(item=>this.props.addLink(item.name, item.address, item.id, true))
 	}
 	render(){
 		return <Links {...this.props}/>

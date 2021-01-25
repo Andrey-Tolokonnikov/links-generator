@@ -1,12 +1,20 @@
 import React from 'react'
 import style from './links.module.css'
-let links =(props)=>{
+let Links =(props)=>{
+    const addLink=()=>{
+    	let address=`${props.currentProtocol}://${props.currentText}:${props.currentPort+props.currentEnd}`
+    	props.addLink(props.currentText, address, props.links.length)
+    	let oldLinks = localStorage.links??"[]"
+    	let newArr=JSON.stringify([...JSON.parse(oldLinks), {name: props.currentText, address: address, id: props.links.length}])
+    	localStorage.setItem("links", newArr)
+    }
+ 
 	return(
 	<div>
 		<div className={style.btn__wrapper}> 
 		<div>
-			<button onClick={()=>{props.changeProtocol('http')}} className={`${style.btn} ${props.currentProtocol=='http'?style.active:''}`}>http</button>
-			<button onClick={()=>{props.changeProtocol('https')}} className={`${style.btn} ${props.currentProtocol=='https'?style.active:''}`}>https</button>
+			<button onClick={()=>{props.changeProtocol('http')}} className={`${style.btn} ${props.currentProtocol==='http'?style.active:''}`}>http</button>
+			<button onClick={()=>{props.changeProtocol('https')}} className={`${style.btn} ${props.currentProtocol==='https'?style.active:''}`}>https</button>
 		</div>
 		<div>
 			<input type="number" min='0' placeholder="Enter the port" value={props.portText} onChange={(e)=>{props.changeTextPort(e.target.value)}}/>
@@ -24,17 +32,17 @@ let links =(props)=>{
 			<div className={style.section}>Old Front</div>
 			{props.links.map(item=>{
 				return(
-				<>
+				<React.Fragment key={item.id}>
 					<div className={style.section}>{item.name}</div>
-					<div className={style.section}><a href={item.address} target='_blank'>{item.address}</a></div>
-				</>
+					<div className={style.section}><a href={item.address} target='_blank' rel="noreferrer noopener">{item.address}</a><div className={style.control}><i className="far fa-edit"></i></div></div>
+				</React.Fragment>
 				)
 			})}
 		</div>
 	
-	<input placeholder="Enter the name of contour" type="text" onChange={(e)=>{props.changeText(e.target.value)}} value={props.currentText}/>
-	<button onClick={()=> {props.addLink(props.currentText, `${props.currentProtocol}://${props.currentText}:${props.currentPort+props.currentEnd}`)}}>Add Link</button>
+	<input placeholder="Enter the name of contour"  type="text" onChange={(e)=>{props.changeText(e.target.value)}} value={props.currentText}/>
+	<button onClick={addLink}>Add Link</button>
 	</div>
 		)
 }
-export default links
+export default Links

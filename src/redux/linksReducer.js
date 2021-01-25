@@ -6,11 +6,12 @@ let initialState={
 	portText: '0000',
 	endText: '',
 	currentEnd: '',
+
 }
 const linksReducer=(state=initialState, action)=>{
 	switch(action.type){
 		case 'ADD-LINK':
-			return state.currentText?{...state,currentText: '', links: [...state.links, {name: action.linkName, address: action.linkAddress}]}:state
+			return (action.firstOpen||state.currentText)?{...state,currentText: '', links: [...state.links, {name: action.linkName, address: action.linkAddress, id: action.id}]}:state
 		case 'CHANGE-AREA-TEXT':
 			return {...state, currentText: action.text}
 		case 'CHANGE-PROTOCOL':
@@ -27,7 +28,7 @@ const linksReducer=(state=initialState, action)=>{
 			return state
 	}
 }
-export const addLink = (Name, Address)=>({type: 'ADD-LINK', linkName: Name, linkAddress: Address})
+export const addLink = (Name, Address, id, firstOpen=false)=>({type: 'ADD-LINK', linkName: Name, linkAddress: Address, id: id, firstOpen:firstOpen})
 export const changeText = newText=>({type: 'CHANGE-AREA-TEXT', text: newText})
 export const changeProtocol = text=>({type: 'CHANGE-PROTOCOL', prot: text})
 export const changePort = ()=>({type: 'CHANGE-PORT'})
