@@ -20,6 +20,9 @@
 	display: inline-block;
 	padding: 5px;
 }
+label{
+	cursor: pointer;
+}
 .control{
 	padding: 10px;
 }
@@ -55,4 +58,17 @@
 input:focus{
 	outline: none;
 }
+.section input{
+	font-size: 21px;
+}
+.addressInput{
+	border: none;
+	padding: 5px;
+	font-size: 20px;
+}
+.editBtn{
+	cursor: pointer;
+	padding: 3px;
+}
+
 

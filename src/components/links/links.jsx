@@ -1,14 +1,26 @@
-import React from 'react'
+import React, {useState} from 'react'
 import style from './links.module.css'
+import EditableLink from './editableLink.jsx'
+import SimpleLink from './simpleLink.jsx'
 let Links =(props)=>{
-    const addLink=()=>{
-    	let address=`${props.currentProtocol}://${props.currentText}:${props.currentPort+props.currentEnd}`
-    	props.addLink(props.currentText, address, props.links.length)
-    	let oldLinks = localStorage.links??"[]"
-    	let newArr=JSON.stringify([...JSON.parse(oldLinks), {name: props.currentText, address: address, id: props.links.length}])
+	let [editable, setEditable] = useState({id: null, text: ''})
+	let defaultLinks = JSON.parse(localStorage.links??"[]")
+	const save = (name, address, id)=>{
+    	let newArr=JSON.stringify([...defaultLinks, {name, address, id}])
     	localStorage.setItem("links", newArr)
     }
- 
+    const saveEdit = ()=>{
+    	const num = props.links.findIndex(link=>link.id===editable.id)
+    	const name = props.links.find(link=>link.id===editable.id).name
+    	props.editLink(name, editable.text, editable.id, num)
+    	let arr =[...defaultLinks.slice(0, num), {name, address: editable.text, id: editable.id}, ...defaultLinks.slice(num+1)]
+    	localStorage.setItem("links", JSON.stringify(arr))
+    }
+    const addLink = ()=>{
+    	let address=`${props.currentProtocol}://${props.currentText}:${props.currentPort+props.currentEnd}`
+    	props.addLink(props.currentText, address, props.links.length)
+    	save(props.currentText,address,props.links.length)
+    }
 	return(
 	<div>
 		<div className={style.btn__wrapper}> 
@@ -17,11 +29,13 @@ let Links =(props)=>{
 			<button onClick={()=>{props.changeProtocol('https')}} className={`${style.btn} ${props.currentProtocol==='https'?style.active:''}`}>https</button>
 		</div>
 		<div>
-			<input type="number" min='0' placeholder="Enter the port" value={props.portText} onChange={(e)=>{props.changeTextPort(e.target.value)}}/>
+			<label htmlFor='portInput'>Port: </label>
+			<input id="portInput" type="number" min='0' placeholder="Enter the port" value={props.portText} onChange={(e)=>{props.changeTextPort(e.target.value)}}/>
 			<button onClick={()=>{props.changePort()}} className={style.btn}>set</button>
 		</div>
 		<div>
-			<input type="text" placeholder="Ending of link" value={props.endText} onChange={(e)=>{props.changeEndText(e.target.value)}}/>
+			<label htmlFor='endInput'>Ending: </label>
+			<input id="endInput" type="text" value={props.endText} onChange={(e)=>{props.changeEndText(e.target.value)}}/>
 			<button onClick={()=>{props.changeCurrentEnd()}} className={style.btn}>set</button>
 		</div>
 		</div>
@@ -32,10 +46,10 @@ let Links =(props)=>{
 			<div className={style.section}>Old Front</div>
 			{props.links.map(item=>{
 				return(
-				<React.Fragment key={item.id}>
-					<div className={style.section}>{item.name}</div>
-					<div className={style.section}><a href={item.address} target='_blank' rel="noreferrer noopener">{item.address}</a><div className={style.control}><i className="far fa-edit"></i></div></div>
-				</React.Fragment>
+				editable.id===item.id?
+				<EditableLink key={item.id} item={item} style={style} editable={editable} saveEdit={saveEdit} setEditable={setEditable}/>
+				:
+				<SimpleLink key={item.id} item={item} style={style}  setEditable={setEditable}/>
 				)
 			})}
 		</div>

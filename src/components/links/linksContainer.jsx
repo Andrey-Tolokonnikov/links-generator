@@ -1,7 +1,7 @@
 import React from 'react'
 import Links from './../links/links'
 import {connect} from 'react-redux'
-import {addLink, changeText, changeProtocol, changePort, changeTextPort, changeEndText, changeCurrentEnd} from './../../redux/linksReducer'
+import {addLink, editLink, changeText, changeProtocol, changePort, changeTextPort, changeEndText, changeCurrentEnd} from './../../redux/linksReducer'
 class linksContainer extends React.Component{
 	componentDidMount(){
 		const oldLinks=localStorage.links??"[]"
@@ -22,4 +22,4 @@ const mapStateToProps=(state)=>{
 		currentEnd: state.currentEnd
 	}
 } 
-export default connect(mapStateToProps, {addLink, changeText,changeProtocol, changePort, changeTextPort, changeEndText,changeCurrentEnd})(linksContainer)
+export default connect(mapStateToProps, {addLink, editLink, changeText,changeProtocol, changePort, changeTextPort, changeEndText,changeCurrentEnd})(linksContainer)
